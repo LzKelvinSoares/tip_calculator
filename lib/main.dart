@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tip_calculator/widgets/bill_amount_field.dart';
 import 'package:tip_calculator/widgets/person_counter.dart';
+import 'package:tip_calculator/widgets/tip_row.dart';
 import 'package:tip_calculator/widgets/tip_slider.dart';
 import 'package:tip_calculator/widgets/total_per_person.dart';
 
@@ -105,13 +106,7 @@ class _TipCalculatorState extends State<TipCalculator> {
                     onIncrement: increment,
                   ),
                   // Tip Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Tip', style: theme.textTheme.titleMedium,),
-                      Text('\$${totalT.toStringAsFixed(2)}', style: theme.textTheme.titleMedium,)
-                    ],
-                  ),
+                  TipRow(theme: theme, totalT: totalT),
                   // Slider Text
                   Text('${(_tipPercentage*100).round()}%', style: theme.textTheme.titleMedium,),
                   // Tip Slider
