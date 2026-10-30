@@ -32,6 +32,8 @@ class TipCalculator extends StatefulWidget {
 class _TipCalculatorState extends State<TipCalculator> {
   int _personCount = 1;
 
+  double _tipPercentage = 0.8;
+
   //methods
 
   void increment() {
@@ -44,7 +46,9 @@ class _TipCalculatorState extends State<TipCalculator> {
       if (_personCount > 0) {
         _personCount--;
       }
-    });}
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -84,7 +88,7 @@ class _TipCalculatorState extends State<TipCalculator> {
             padding: const EdgeInsets.all(8.0),
             child: Container(
               width: 100,
-              height: 100,
+              height: 250,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
@@ -115,8 +119,31 @@ class _TipCalculatorState extends State<TipCalculator> {
                         personCount: _personCount, 
                         onDecrement: decrement, 
                         onIncrement: increment,
-                      )
+                      ),
                     ],
+                  ),
+                  // Tip Section
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Tip', style: theme.textTheme.titleMedium,),
+                      Text('\$20', style: theme.textTheme.titleMedium,)
+                    ],
+                  ),
+                  // Slider Text
+                  Text('${(_tipPercentage*100).round()}%', style: theme.textTheme.titleMedium,),
+                  // Tip Slider
+                  Slider(
+                    min: 0.0,
+                    max: 0.5,
+                    label: '${(_tipPercentage*100).round()}%',
+                    divisions: 5,
+                    value: _tipPercentage, 
+                    onChanged: (value) => { 
+                      setState(() {                        
+                      _tipPercentage = value;
+                      })
+                    }
                   )
                 ],
               ),
