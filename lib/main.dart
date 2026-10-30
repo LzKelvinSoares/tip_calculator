@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tip_calculator/widgets/bill_amount_field.dart';
 import 'package:tip_calculator/widgets/person_counter.dart';
 import 'package:tip_calculator/widgets/tip_slider.dart';
+import 'package:tip_calculator/widgets/total_per_person.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,29 +75,7 @@ class _TipCalculatorState extends State<TipCalculator> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: EdgeInsets.all(8.0), 
-            child: 
-              Container(
-                padding: const EdgeInsets.all(18.0),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      "Total per person", 
-                      style: style
-                    ),
-                    Text(
-                      "\$$total", 
-                      style: style.copyWith(fontSize: theme.textTheme.displaySmall?.fontSize)
-                    ),
-                  ],
-                )
-              ),
-          ),
+          TotalPerPerson(theme: theme, style: style, total: total),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -159,5 +138,3 @@ class _TipCalculatorState extends State<TipCalculator> {
     );
   }
 }
-
-
