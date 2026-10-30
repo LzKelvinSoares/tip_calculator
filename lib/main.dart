@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tip_calculator/widgets/person_counter.dart';
+import 'package:tip_calculator/widgets/tip_slider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -133,17 +134,13 @@ class _TipCalculatorState extends State<TipCalculator> {
                   // Slider Text
                   Text('${(_tipPercentage*100).round()}%', style: theme.textTheme.titleMedium,),
                   // Tip Slider
-                  Slider(
-                    min: 0.0,
-                    max: 0.5,
-                    label: '${(_tipPercentage*100).round()}%',
-                    divisions: 5,
-                    value: _tipPercentage, 
-                    onChanged: (value) => { 
+                  TipSlider(
+                    tipPercentage: _tipPercentage,
+                    onChanged: (double value) => { 
                       setState(() {                        
-                      _tipPercentage = value;
+                        _tipPercentage = value;
                       })
-                    }
+                    },
                   )
                 ],
               ),
@@ -154,3 +151,4 @@ class _TipCalculatorState extends State<TipCalculator> {
     );
   }
 }
+
