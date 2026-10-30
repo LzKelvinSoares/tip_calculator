@@ -35,17 +35,26 @@ class _TipCalculatorState extends State<TipCalculator> {
   int _personCount = 1;
 
   double _tipPercentage = 0.2;
+  double _billTotal = 0.0;
 
   //methods
+  double totalTip() {
+    return (_billTotal*_tipPercentage);
+  }
+
+  double totalPerPerson() {
+    return (totalTip() + _billTotal) / _personCount;
+  }
 
   void increment() {
     setState(() {
       _personCount++;
     });
   }
+
   void decrement() {
     setState(() {
-      if (_personCount > 0) {
+      if (_personCount > 1) {
         _personCount--;
       }
     });
@@ -54,6 +63,8 @@ class _TipCalculatorState extends State<TipCalculator> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    double total = totalPerPerson();
+    double totalT = totalTip();
     final style = theme.textTheme.titleMedium!.copyWith(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold);
     
     return Scaffold(
@@ -79,7 +90,7 @@ class _TipCalculatorState extends State<TipCalculator> {
                       style: style
                     ),
                     Text(
-                      "\$20.13", 
+                      "\$$total", 
                       style: style.copyWith(fontSize: theme.textTheme.displaySmall?.fontSize)
                     ),
                   ],
@@ -102,8 +113,10 @@ class _TipCalculatorState extends State<TipCalculator> {
               child: Column(
                 children: [
                   BillAmountField(
-                    onChanged: (value) => print("Amount: $value"),
-                    billAmount: '100',
+                    onChanged: (String value) => setState(() {
+                      _billTotal = double.parse(value);
+                    }),
+                    billAmount: _billTotal.toString(),
                   ),
                   // Split Bill Area
                   Row(
@@ -123,7 +136,7 @@ class _TipCalculatorState extends State<TipCalculator> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Tip', style: theme.textTheme.titleMedium,),
-                      Text('\$20', style: theme.textTheme.titleMedium,)
+                      Text('\$$totalT', style: theme.textTheme.titleMedium,)
                     ],
                   ),
                   // Slider Text
