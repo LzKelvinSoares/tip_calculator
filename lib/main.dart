@@ -98,24 +98,18 @@ class _TipCalculatorState extends State<TipCalculator> {
                     billAmount: _billTotal.toString(),
                   ),
                   // Split Bill Area
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Split', style: theme.textTheme.titleMedium,),
-                      PersonCounter(
-                        theme: theme, 
-                        personCount: _personCount, 
-                        onDecrement: decrement, 
-                        onIncrement: increment,
-                      ),
-                    ],
+                  PersonCounter(
+                    theme: theme, 
+                    personCount: _personCount, 
+                    onDecrement: decrement, 
+                    onIncrement: increment,
                   ),
                   // Tip Section
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Tip', style: theme.textTheme.titleMedium,),
-                      Text('\$$totalT', style: theme.textTheme.titleMedium,)
+                      Text('\$${totalT.toStringAsFixed(2)}', style: theme.textTheme.titleMedium,)
                     ],
                   ),
                   // Slider Text
