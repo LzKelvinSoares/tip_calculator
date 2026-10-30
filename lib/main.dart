@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tip_calculator/widgets/bill_amount_field.dart';
 import 'package:tip_calculator/widgets/person_counter.dart';
 import 'package:tip_calculator/widgets/tip_slider.dart';
 
@@ -33,7 +34,7 @@ class TipCalculator extends StatefulWidget {
 class _TipCalculatorState extends State<TipCalculator> {
   int _personCount = 1;
 
-  double _tipPercentage = 0.8;
+  double _tipPercentage = 0.2;
 
   //methods
 
@@ -88,6 +89,7 @@ class _TipCalculatorState extends State<TipCalculator> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
+              padding: EdgeInsets.all(20.0),
               width: 100,
               height: 250,
               decoration: BoxDecoration(
@@ -99,16 +101,9 @@ class _TipCalculatorState extends State<TipCalculator> {
               ),
               child: Column(
                 children: [
-                  TextField(
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.attach_money),
-                      labelText: 'Input Amount',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (String value) {
-                      print(value);
-                    },
+                  BillAmountField(
+                    onChanged: (value) => print("Amount: $value"),
+                    billAmount: '100',
                   ),
                   // Split Bill Area
                   Row(
@@ -151,4 +146,5 @@ class _TipCalculatorState extends State<TipCalculator> {
     );
   }
 }
+
 
