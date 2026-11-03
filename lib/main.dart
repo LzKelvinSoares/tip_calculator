@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tip_calculator/widgets/bill_amount_field.dart';
 import 'package:tip_calculator/widgets/person_counter.dart';
+import 'package:tip_calculator/widgets/providers/TipCalculatorModel.dart';
 import 'package:tip_calculator/widgets/tip_row.dart';
 import 'package:tip_calculator/widgets/tip_slider.dart';
 import 'package:tip_calculator/widgets/total_per_person.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => TipCalculatorModel(),
+    child: const MyApp()
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -34,39 +39,11 @@ class TipCalculator extends StatefulWidget {
 }
 
 class _TipCalculatorState extends State<TipCalculator> {
-  int _personCount = 1;
-
-  double _tipPercentage = 0.2;
-  double _billTotal = 0.0;
-
-  //methods
-  double totalTip() {
-    return (_billTotal*_tipPercentage);
-  }
-
-  double totalPerPerson() {
-    return (totalTip() + _billTotal) / _personCount;
-  }
-
-  void increment() {
-    setState(() {
-      _personCount++;
-    });
-  }
-
-  void decrement() {
-    setState(() {
-      if (_personCount > 1) {
-        _personCount--;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    double total = totalPerPerson();
-    double totalT = totalTip();
+    final model = Provider.of<TipCalculatorModel>(context);
     final style = theme.textTheme.titleMedium!.copyWith(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold);
     
     return Scaffold(
@@ -76,7 +53,7 @@ class _TipCalculatorState extends State<TipCalculator> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TotalPerPerson(theme: theme, style: style, total: total),
+          TotalPerPerson(theme: theme, style: style, total: model.totalPerPerson),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -94,28 +71,26 @@ class _TipCalculatorState extends State<TipCalculator> {
                 children: [
                   BillAmountField(
                     onChanged: (String value) => setState(() {
-                      _billTotal = double.parse(value);
+                      model.updateBillTotal(double.parse(value));
                     }),
-                    billAmount: _billTotal.toString(),
+                    billAmount: model.billTotal.toString(),
                   ),
                   // Split Bill Area
                   PersonCounter(
                     theme: theme, 
-                    personCount: _personCount, 
-                    onDecrement: decrement, 
-                    onIncrement: increment,
+                    personCount: model.personCount, 
+                    onDecrement: model.decrement, 
+                    onIncrement: model.increment,
                   ),
                   // Tip Section
-                  TipRow(theme: theme, totalT: totalT),
+                  TipRow(theme: theme, totalT: model.totalTip),
                   // Slider Text
-                  Text('${(_tipPercentage*100).round()}%', style: theme.textTheme.titleMedium,),
+                  Text('${(model.tipPercentage*100).round()}%', style: theme.textTheme.titleMedium,),
                   // Tip Slider
                   TipSlider(
-                    tipPercentage: _tipPercentage,
+                    tipPercentage: model.tipPercentage,
                     onChanged: (double value) => { 
-                      setState(() {                        
-                        _tipPercentage = value;
-                      })
+                      model.updateTipPercentage(value)
                     },
                   )
                 ],
