@@ -6,6 +6,7 @@ import 'package:tip_calculator/widgets/providers/ThemeProvider.dart';
 import 'package:tip_calculator/widgets/providers/TipCalculatorModel.dart';
 import 'package:tip_calculator/widgets/tip_row.dart';
 import 'package:tip_calculator/widgets/tip_slider.dart';
+import 'package:tip_calculator/widgets/toggle_theme_button.dart';
 import 'package:tip_calculator/widgets/total_per_person.dart';
 
 void main() {
@@ -24,12 +25,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       title: 'Tip Calculator',
-      theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),        
-        useMaterial3: true
-      ),
+      theme: themeProvider.currentTheme,
       home: TipCalculator(),
     );
   }
@@ -48,19 +47,13 @@ class _TipCalculatorState extends State<TipCalculator> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final model = Provider.of<TipCalculatorModel>(context);
-    final themeProvider = Provider.of<ThemeProvider>(context);
     final style = theme.textTheme.titleMedium!.copyWith(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold);
     
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tip Calculator'),
         actions: [
-          IconButton(
-            icon: Icon(themeProvider.themeIcon),
-            onPressed: () {
-              themeProvider.toggleTheme();
-            },
-          ),
+          ToggleThemeButton(),
         ],
       ),
       body: Column(

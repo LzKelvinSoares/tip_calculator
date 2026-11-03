@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.light;
-  ThemeMode get themeMode => _themeMode;
-  IconData get themeIcon => _themeMode == ThemeMode.light ? Icons.brightness_6 : Icons.brightness_2;
+  ThemeMode _currentTheme = ThemeMode.light;
+  IconData get themeIcon => _currentTheme == ThemeMode.light ? Icons.nightlight_round : Icons.wb_sunny;
 
-  void toggleTheme() {
-    if (_themeMode == ThemeMode.light) {
-      _themeMode = ThemeMode.dark;
+  ThemeData get currentTheme {
+    if (_currentTheme == ThemeMode.light) {
+      return ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      );
     } else {
-      _themeMode = ThemeMode.light;
+      return ThemeData.dark(useMaterial3: true);
+    }
+  }
+  
+  void toggleTheme() {
+    if (_currentTheme == ThemeMode.light) {
+      _currentTheme = ThemeMode.dark;
+    } else {
+      _currentTheme = ThemeMode.light;
     }
     notifyListeners();
   }
