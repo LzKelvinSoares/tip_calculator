@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tip_calculator/widgets/bill_amount_field.dart';
 import 'package:tip_calculator/widgets/person_counter.dart';
+import 'package:tip_calculator/widgets/providers/ThemeProvider.dart';
 import 'package:tip_calculator/widgets/providers/TipCalculatorModel.dart';
 import 'package:tip_calculator/widgets/tip_row.dart';
 import 'package:tip_calculator/widgets/tip_slider.dart';
 import 'package:tip_calculator/widgets/total_per_person.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => TipCalculatorModel(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => TipCalculatorModel()),
+      ChangeNotifierProvider(create: (context) => ThemeProvider()),
+    ],
     child: const MyApp()
   ));
 }
@@ -44,11 +48,20 @@ class _TipCalculatorState extends State<TipCalculator> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final model = Provider.of<TipCalculatorModel>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
     final style = theme.textTheme.titleMedium!.copyWith(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold);
     
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tip Calculator'),
+        actions: [
+          IconButton(
+            icon: Icon(themeProvider.themeIcon),
+            onPressed: () {
+              themeProvider.toggleTheme();
+            },
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
